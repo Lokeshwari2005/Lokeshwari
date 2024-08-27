@@ -1,0 +1,56 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct Node {
+    int data;
+    struct Node* left;
+    struct Node* right;
+} Node;
+
+Node* createNode(int data) {
+    Node* newNode = (Node*)malloc(sizeof(Node));
+    if (!newNode) {
+        printf("Memory allocation failed\n");
+        exit(1);
+    }
+    newNode->data = data;
+    newNode->left = NULL;
+    newNode->right = NULL;
+    return newNode;
+}
+
+int height(Node* root) {
+    if (root == NULL) {
+        return -1;  
+    }
+    
+    int leftHeight = height(root->left);
+    int rightHeight = height(root->right);
+    
+    return (leftHeight > rightHeight ? leftHeight : rightHeight) + 1;
+}
+
+void freeTree(Node* root) {
+    if (root != NULL) {
+        freeTree(root->left);
+        freeTree(root->right);
+        free(root);
+    }
+}
+
+int main() {
+    
+    Node* root = createNode(4);
+    root->left = createNode(2);
+    root->right = createNode(6);
+    root->left->left = createNode(1);
+    root->left->right = createNode(3);
+    root->right->left = createNode(5);
+    root->right->right = createNode(7);
+
+   int treeHeight = height(root);
+    printf("Height of the binary tree: %d\n", treeHeight);
+    freeTree(root);
+    return 0;
+}
+                                                                                                                                                                 
